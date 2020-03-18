@@ -1,19 +1,40 @@
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/opencv.hpp"
+#include <iostream>
 
+using namespace std;
 using namespace cv;
 
-int main (int argc, char** argv) {
+int main(){
 
-	namedWindow("Example3", WINDOW_AUTOSIZE);
-	VideoCapture cap;
-	cap.open( std::string(argv[1]) );
-	cv::Mat frame;
-	for(;;) {
-		cap >> frame;
-		if (frame.empty()) break;
-		imshow("Example3", frame);
-		if (waitKey(1) >= 0 ) break;
-	}
-	return 0;
+  // 0 for webcam 
+  VideoCapture cap("/home/dani/repos/LearnOpenCV/Program2_Video/file_example_MP4_480_1_5MG.mp4"); 
+   
+  if(!cap.isOpened()){
+    cout << "Error opening video stream or file" << endl;
+    return -1;
+  }
+	
+  while(1){
+
+    Mat frame;
+    // Capture frame-by-frame
+    cap >> frame;
+ 
+    if (frame.empty())
+      break;
+    imshow( "Frame", frame );
+
+    // Press  ESC on keyboard to exit
+    char c=(char)waitKey(25);
+    if(c==27)
+      break;
+  }
+ 
+  // When everything done, release the video capture object
+  cap.release();
+
+  // Closes all the frames
+  destroyAllWindows();
+	
+  return 0;
 }
